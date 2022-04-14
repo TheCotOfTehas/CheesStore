@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Store
 {
-    internal interface CheesRepository
+    public interface IProductRepository
     {
+        Chees[] GetByTitle(string namePart);
     }
 }
