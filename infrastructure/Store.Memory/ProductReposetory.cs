@@ -2,7 +2,7 @@
 
 namespace Store.Memory
 {
-    public class CheesReposetory : IProductRepository
+    public class ProductReposetory : IProductRepository
     {
         private readonly Chees[] chees = new[]
         {
