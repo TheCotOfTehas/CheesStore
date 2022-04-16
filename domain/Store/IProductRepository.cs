@@ -8,6 +8,8 @@ namespace Store
 {
     public interface IProductRepository
     {
-        Chees[] GetByTitle(string namePart);
+        Products[] GetAllByСategories(string categoryId);
+
+        Products[] GetAllByTitleOrManufacture(string titlePart);
     }
 }

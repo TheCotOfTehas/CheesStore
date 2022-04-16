@@ -4,17 +4,26 @@ namespace Store.Memory
 {
     public class ProductReposetory : IProductRepository
     {
-        private readonly Chees[] chees = new[]
+        private readonly Products[] chees = new[]
         {
-            new Chees(1, "Качотта"),
-            new Chees(2, "Рикотта"),
-            new Chees(3, "Качокавалла"),
+            new Products(1, "Качотта", "Chees", "Podoksha"),
+            new Products(2, "Рикотта", "Chees", "Podoksha"),
+            new Products(3, "Качокавалла", "Chees", "Podoksha"),
+            new Products(3, "Адыгейский", "Chees", "Подносковье"),
         };
 
-        public Chees[] GetByTitle(string titlePart)
+        public Products[] GetAllByTitleOrManufacture(string titlePart)
         {
            return chees
                 .Where(chees => chees.Title.Contains(titlePart))
+                .ToArray();
+        }
+
+        public Products[] GetAllByСategories(string query)
+        {
+            return chees.Where(product => product
+                .Сategories.Contains(query)
+                || product.Title.Contains(query))
                 .ToArray();
         }
     }
