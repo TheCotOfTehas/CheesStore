@@ -6,13 +6,13 @@ namespace Store.Web.Controllers
     {
         private readonly ProductService productServise;
 
-        public SearchController(ProductService productService)
+        public SearchController(ProductService productServise)
         {
             this.productServise = productServise;
         }
         public IActionResult Index(string query)
         {
-            var product = productServise.GetAllByQuery(query);
+            var product = productServise.GetAllByQuery(query); //Object reference not set to an instance of an object."
             return View(product);
         }
     }
