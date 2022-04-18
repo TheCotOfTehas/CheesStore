@@ -28,7 +28,7 @@ namespace Store.Tests
 
             var actual = productService.GetAllByQuery("Chees");
 
-            Assert.Collection(actual, product => Assert.Equal(2, product.Id));
+            Assert.Collection(actual, product => Assert.Equal(1, product.Id));
         }
     }
 }

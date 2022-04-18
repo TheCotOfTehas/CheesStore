@@ -17,7 +17,8 @@ public class Products
 
     internal static bool IsСategories(string s)
     {
-        //Как получить доступ к репозиторию
+        if (string.IsNullOrEmpty(s)) return false;
+
         if (string.IsNullOrWhiteSpace(s.Replace("-", "")))
             return false;
 
