@@ -17,12 +17,5 @@ namespace Store.Tests
             bool result = Products.IsÑategories("  ");
             Assert.False(result);
         }
-
-        [Fact]
-        public void IsÑategories_WithInvalidCategories_ReturnFalse()
-        {
-            bool result = Products.IsÑategories("Íåòó òàêîé");
-            Assert.False(result);
-        }
     }
 }
