@@ -7,14 +7,14 @@ namespace Store.Tests
         [Fact]
         public void IsÑategories_WithNull_ReturnFalse()
         {
-            bool result = Products.IsÑategories(null);
+            bool result = Product.IsÑategories(null);
             Assert.False(result);
         }
 
         [Fact]
         public void IsÑategories_VoidString_ReturnFalse()
         {
-            bool result = Products.IsÑategories("  ");
+            bool result = Product.IsÑategories("  ");
             Assert.False(result);
         }
     }

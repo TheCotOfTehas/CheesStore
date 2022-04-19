@@ -18,11 +18,11 @@ namespace Store.Tests
 
             productRepositoryStub.Setup(x => x
                 .GetAllByСategories(It.IsAny<string>()))
-                .Returns(new[] {new Products(1, "", "", "")});
+                .Returns(new[] {new Product(1, "", "", "","", 0m)});
 
             productRepositoryStub.Setup(x => x
                .GetAllByTitleOrManufacture(It.IsAny<string>()))
-               .Returns(new[] { new Products(2, "", "", "") });
+               .Returns(new[] { new Product(2, "", "", "", "", 0m) });
 
             var productService = new ProductService(productRepositoryStub.Object);
 
