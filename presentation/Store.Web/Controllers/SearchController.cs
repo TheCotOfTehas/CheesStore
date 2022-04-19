@@ -12,8 +12,8 @@ namespace Store.Web.Controllers
         }
         public IActionResult Index(string query)
         {
-            var product = productServise.GetAllByQuery(query); //Object reference not set to an instance of an object."
-            return View(product);
+            var product = productServise.GetAllByQuery(query); 
+            return View("Index", product);
         }
     }
 }

@@ -15,14 +15,18 @@ namespace Store
             this.productRepository = productRepository;
         }
 
-        public Products[] GetAllByQuery(string query)
+        public Product[] GetAllByQuery(string query)
         {
-            if (Products.IsСategories(query))
-            {
-                return productRepository.GetAllByСategories(query);
-            }
+            var categories = productRepository.GetAllByСategories(query);
+            if (categories.Length != 0)
+                return categories;
+            else
+                return productRepository.GetAllByTitleOrManufacture(query);
+        }
 
-            return productRepository.GetAllByTitleOrManufacture(query);
-        } 
+        public object GetById(int id)
+        {
+            return productRepository.GetById(id);
+        }
     }
 }
