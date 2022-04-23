@@ -11,6 +11,8 @@ namespace Store
         public int ProductId { get; }
         public decimal Count { get; }
         public decimal Price { get; }
+
+
         public OrderItem(int productId, decimal count, decimal price)
         {
             if (count <= 0)

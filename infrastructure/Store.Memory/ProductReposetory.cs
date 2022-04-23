@@ -31,12 +31,16 @@ namespace Store.Memory
 
         public Product GetById(int id)
         {
-            return products[1];
-            //return products.Single(product => product.Id == id);
-            //return chees
-            //    .Where(product => product.Id == id)
-            //    .FirstOrDefault() ?? 
-            //    throw new NullReferenceException();
+            return products.Single(product => product.Id == id);
+        }
+
+        public Product[] GetAllByIds(IEnumerable<int> productIds)
+        {
+            var foundProducts = from product in products
+                                join productId in productIds on product.Id equals productId
+                                select product;
+
+            return foundProducts.ToArray();
         }
     }
 }
