@@ -14,6 +14,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddSingleton<IProductRepository, ProductReposetory>();
+builder.Services.AddSingleton<IOrderRepositorycs, OrderRepository>();
 builder.Services.AddSingleton<ProductService>();
 var app = builder.Build();
 
