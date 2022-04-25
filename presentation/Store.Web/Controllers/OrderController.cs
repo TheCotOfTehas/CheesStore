@@ -52,7 +52,7 @@ namespace Store.Web.Controllers
 
         }
         [HttpPost]
-        public IActionResult AddItem(int productId, int count)
+        public IActionResult AddItem(int productId, int count = 1)
         {
             (Order order, Cart cart) = GetOrderAndCart();
 
@@ -61,7 +61,7 @@ namespace Store.Web.Controllers
 
             SaveOrderAndCart(order, cart);
 
-            return RedirectToAction("Index", "Product", new { product });
+            return RedirectToAction("Index", "Product", new {id = productId });
         }
 
 
@@ -82,15 +82,15 @@ namespace Store.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateItem(int ProductId, int count)
+        public IActionResult UpdateItem(int productId, int count)
         {
             (Order order, Cart cart) = GetOrderAndCart();
 
-            order.GetItem(ProductId).Count = count;
+            order.GetItem(productId).Count = count;
 
             SaveOrderAndCart(order, cart);
 
-            return RedirectToAction("Index", "Product", new { ProductId });
+            return RedirectToAction("Index", "Product", new { productId });
         }
 
         private void SaveOrderAndCart(Order order, Cart cart)
@@ -101,17 +101,6 @@ namespace Store.Web.Controllers
             cart.TotalPrice = order.TotalPrice;
             HttpContext.Session.Set(cart);
         }
-
-        //public IActionResult RemoveProduct(int id)
-        //{
-        //    (Order order, Cart cart) = GetOrderAndCart();
-
-        //    order.GetItem(id).Count--;
-
-        //    SavtOrderAndCart(order, cart);
-
-        //    return RedirectToAction("Index", "Product", new { id });
-        //}
 
         public IActionResult RemoveItem(int id)
         {
