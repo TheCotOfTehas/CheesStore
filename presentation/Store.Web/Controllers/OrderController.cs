@@ -51,11 +51,24 @@ namespace Store.Web.Controllers
             };
 
         }
-        public IActionResult AddItem(int id)
+        [HttpPost]
+        public IActionResult AddItem(int productId, int count)
+        {
+            (Order order, Cart cart) = GetOrderAndCart();
+
+            var product = productRepository.GetById(productId);
+            order.AddOrUpdateItem(product, count);
+
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index", "Product", new { product });
+        }
+
+
+        private (Order order, Cart cart) GetOrderAndCart()
         {
             Order order;
-            Cart cart;
-            if(HttpContext.Session.TryGetCart(out cart))
+            if (HttpContext.Session.TryGetCart(out Cart cart))
             {
                 order = orderRepositorycs.GetById(cart.OrderId);
             }
@@ -65,14 +78,49 @@ namespace Store.Web.Controllers
                 cart = new Cart(order.Id);
             }
 
-            var product = productRepository.GetById(id);
-            order.AddItem(product, 1);
+            return (order, cart);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateItem(int ProductId, int count)
+        {
+            (Order order, Cart cart) = GetOrderAndCart();
+
+            order.GetItem(ProductId).Count = count;
+
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index", "Product", new { ProductId });
+        }
+
+        private void SaveOrderAndCart(Order order, Cart cart)
+        {
             orderRepositorycs.Update(order);
 
             cart.TotalCount = order.TotatalCount;
             cart.TotalPrice = order.TotalPrice;
-
             HttpContext.Session.Set(cart);
+        }
+
+        //public IActionResult RemoveProduct(int id)
+        //{
+        //    (Order order, Cart cart) = GetOrderAndCart();
+
+        //    order.GetItem(id).Count--;
+
+        //    SavtOrderAndCart(order, cart);
+
+        //    return RedirectToAction("Index", "Product", new { id });
+        //}
+
+        public IActionResult RemoveItem(int id)
+        {
+
+            (Order order, Cart cart) = GetOrderAndCart();
+
+            order.RemoveItem(id);
+
+            SaveOrderAndCart(order, cart);
 
             return RedirectToAction("Index", "Product", new { id });
         }

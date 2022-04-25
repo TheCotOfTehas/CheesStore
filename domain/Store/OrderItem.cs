@@ -9,18 +9,32 @@ namespace Store
     public class OrderItem
     {
         public int ProductId { get; }
-        public decimal Count { get; }
+        private decimal count;
+        public decimal Count 
+        {
+            get { return count; }
+            set 
+            {
+                ThrowIfValidateCount(value);
+                count = value;
+            }
+        }
         public decimal Price { get; }
 
 
         public OrderItem(int productId, decimal count, decimal price)
         {
-            if (count <= 0)
-                throw new ArgumentOutOfRangeException("Count do not be less than zero", nameof(count));
+            ThrowIfValidateCount(count);
 
             ProductId = productId;
             Count = count;
             Price = price;
+        }
+
+        private static void ThrowIfValidateCount(decimal count)
+        {
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(nameof(count), "Count do not be less than zero");
         }
     }
 }
