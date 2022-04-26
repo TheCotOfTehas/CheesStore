@@ -18,7 +18,7 @@ namespace Store.Tests
         [Fact]
         public void TotalCount_WithEmpatyItems()
         {
-            var order = new Order(1, new OrderItem[0]);
+            var order = new Order(1, Array.Empty<OrderItem>());
 
             Assert.Equal(0m, order.TotatalCount);
         }
@@ -92,6 +92,96 @@ namespace Store.Tests
             Assert.Equal(8, order.TotatalCount);
             Assert.Equal(4, order.Items.Count);
             Assert.Equal(5, order.Items.Single(x => x.ProductId == idAddProd1).Count);
+        }
+
+        [Fact]
+        public void GetItem_WithExistingItem_ReturnsItem()
+        {
+            var order = new Order(1, new List<OrderItem>()
+            {
+                new OrderItem(1,6m, 100m),
+                new OrderItem(2,1m, 100m),
+                new OrderItem(3,1m, 100m),
+            });
+
+            var item = order.GetItem(1);
+
+            Assert.Equal(6, item.Count);
+        }
+
+        [Fact]
+        public void GetItem_WithNonExistingItem_ThrowsInvalidOperation()
+        {
+            var order = new Order(1, new List<OrderItem>()
+            {
+                new OrderItem(1,6m, 100m),
+                new OrderItem(2,1m, 100m),
+                new OrderItem(3,1m, 100m),
+            });
+
+            Assert.Throws<InvalidOperationException>(() => 
+            {
+                order.GetItem(4);
+            });
+        }
+        [Fact]
+        public void AddOrUpdateItem_withExistingItem_UpdatesCount()
+        {
+            var order = new Order(1, new List<OrderItem>()
+            {
+                new OrderItem(1,6m, 100m),
+                new OrderItem(2,1m, 100m),
+                new OrderItem(3,1m, 100m),
+            });
+
+            var product = new Product(1, null, null, null, null, 0m);
+
+            order.AddOrUpdateItem(product, 10);
+            Assert.Equal(16, order.GetItem(1).Count);
+        }
+
+        [Fact]
+        public void AddOrUpdateItem_witNonExistingItem_UpdatesCount()
+        {
+            var order = new Order(1, new List<OrderItem>()
+            {
+                new OrderItem(1,6m, 100m),
+                new OrderItem(2,3m, 100m),
+                new OrderItem(3,1m, 100m),
+            });
+
+            var product = new Product(4, null, null, null, null, 0m);
+
+            order.AddOrUpdateItem(product, 10);
+            Assert.Equal(10, order.GetItem(4).Count);
+
+        }
+
+        [Fact]
+        public void RemoveItem_WithExistingItem_RemoveItem()
+        {
+            var order = new Order(1, new List<OrderItem>()
+            {
+                new OrderItem(1,6m, 100m),
+                new OrderItem(2,1m, 100m),
+                new OrderItem(3,1m, 100m),
+            });
+
+            order.RemoveItem(1);
+            Assert.Equal(2, order.Items.Count);
+        }
+
+        [Fact]
+        public void RemoveItem_WithNonExistingItem_RemoveItem()
+        {
+            var order = new Order(1, new List<OrderItem>()
+            {
+                new OrderItem(1,6m, 100m),
+                new OrderItem(2,1m, 100m),
+                new OrderItem(3,1m, 100m),
+            });
+
+            Assert.Throws<InvalidOperationException>(() => order.RemoveItem(4));
         }
     }
 }

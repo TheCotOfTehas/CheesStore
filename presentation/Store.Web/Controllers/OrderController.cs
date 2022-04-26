@@ -51,11 +51,24 @@ namespace Store.Web.Controllers
             };
 
         }
-        public IActionResult AddItem(int id)
+        [HttpPost]
+        public IActionResult AddItem(int productId, int count = 1)
+        {
+            (Order order, Cart cart) = GetOrderAndCart();
+
+            var product = productRepository.GetById(productId);
+            order.AddOrUpdateItem(product, count);
+
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index", "Product", new {id = productId });
+        }
+
+
+        private (Order order, Cart cart) GetOrderAndCart()
         {
             Order order;
-            Cart cart;
-            if(HttpContext.Session.TryGetCart(out cart))
+            if (HttpContext.Session.TryGetCart(out Cart cart))
             {
                 order = orderRepositorycs.GetById(cart.OrderId);
             }
@@ -65,16 +78,40 @@ namespace Store.Web.Controllers
                 cart = new Cart(order.Id);
             }
 
-            var product = productRepository.GetById(id);
-            order.AddItem(product, 1);
+            return (order, cart);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateItem(int productId, int count)
+        {
+            (Order order, Cart cart) = GetOrderAndCart();
+
+            order.GetItem(productId).Count = count;
+
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index", "Order");
+        }
+
+        private void SaveOrderAndCart(Order order, Cart cart)
+        {
             orderRepositorycs.Update(order);
 
             cart.TotalCount = order.TotatalCount;
             cart.TotalPrice = order.TotalPrice;
-
             HttpContext.Session.Set(cart);
+        }
 
-            return RedirectToAction("Index", "Product", new { id });
+        public IActionResult RemoveItem(int productId)
+        {
+
+            (Order order, Cart cart) = GetOrderAndCart();
+
+            order.RemoveItem(productId);
+
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index", "Order");
         }
     }
 }

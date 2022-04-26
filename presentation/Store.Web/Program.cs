@@ -16,6 +16,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IProductRepository, ProductReposetory>();
 builder.Services.AddSingleton<IOrderRepositorycs, OrderRepository>();
 builder.Services.AddSingleton<ProductService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,10 +34,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseSession();
-//controller/action/{id}
-//book
-//book/index
-//book/index/234
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

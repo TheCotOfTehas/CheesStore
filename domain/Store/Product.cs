@@ -26,6 +26,6 @@ public class Product
         if (string.IsNullOrWhiteSpace(query.Replace("-", "")))
             return false;
 
-        return  true;//тут ?
+        return  true;
     }
 }
