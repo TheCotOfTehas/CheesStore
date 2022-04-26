@@ -3,7 +3,7 @@
     public class OrderModel
     {
         public int Id { get; set; }
-        public OrderItemModel[] Items { get; set; } = new OrderItemModel[0];
+        public OrderItemModel[] Items { get; set; } = Array.Empty<OrderItemModel>();
         public decimal ToralCount { get; set; }
 
         public decimal TotalPrice { get; set; }
