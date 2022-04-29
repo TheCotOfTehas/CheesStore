@@ -1,4 +1,5 @@
 using Store;
+using Store.Contractors;
 using Store.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddSingleton<IProductRepository, ProductReposetory>();
 builder.Services.AddSingleton<IOrderRepositorycs, OrderRepository>();
+builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
+builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
 builder.Services.AddSingleton<ProductService>();
 
 var app = builder.Build();
