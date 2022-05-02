@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IProductRepository, ProductReposetory>();
 builder.Services.AddSingleton<IOrderRepositorycs, OrderRepository>();
 builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
 builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
+builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
 builder.Services.AddSingleton<ProductService>();
 
 var app = builder.Build();
