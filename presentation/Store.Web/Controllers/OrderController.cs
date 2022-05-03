@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.Contractors;
+using Store.Web.Contractors;
 using Store.Web.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,6 +13,7 @@ namespace Store.Web.Controllers
         private readonly IOrderRepositorycs orderRepository;
         private readonly IEnumerable<IDeliveryService> deliveryServices;
         private readonly IEnumerable<IPaymentService> paymentServices;
+        private readonly IEnumerable<IWebContractorService> webContractorServices;
         private readonly INotificationService notificationService;
 
 
@@ -19,12 +21,14 @@ namespace Store.Web.Controllers
                               IOrderRepositorycs orderRepositorycs,
                               IEnumerable<IDeliveryService> deliveryServices,
                               IEnumerable<IPaymentService> paymentServices,
-                              INotificationService notificationService)
+                              IEnumerable<IWebContractorService> webContractorServices,
+        INotificationService notificationService)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepositorycs;
             this.notificationService = notificationService;
             this.deliveryServices = deliveryServices;
+            this.webContractorServices = webContractorServices;
             this.paymentServices = paymentServices;
         }
 
@@ -250,35 +254,17 @@ namespace Store.Web.Controllers
         [HttpPost]
         public IActionResult StartPayment(int id, string uniqueCode, int step, Dictionary<string, string> values)
         {
-            //тут для проверки. Всё удалить
             var paymentService = paymentServices.Single(service => service.UniqueCode == uniqueCode);
 
             var order = orderRepository.GetById(id);
 
             var form = paymentService.CreateForm(order);
 
+            var webContractorService = webContractorServices.SingleOrDefault(service => service.UniqueCode == uniqueCode);
+            if (webContractorService != null)
+                return Redirect(webContractorService.GetUri);
+
             return View("PaymentStep", form);
-
-
-            //var form = paymentService.MoveNextForm(id, step, values);
-
-            //if (form.IsFinal)
-            //{
-            //    var order = orderRepository.GetById(id);
-            //    order.Delivery = paymentService.GetDelivery(form);
-            //    orderRepository.Update(order);
-
-            //    var model = new DeliveryModel
-            //    {
-            //        OrderId = id,
-            //        Methods = paymentServices
-            //            .ToDictionary(service => service.UniqueCode,
-            //                          servise => servise.Title)
-            //    };
-
-            //    return View("PaymentMethod", model);
-            //}
-            //return View("DeliveryStep", form);
         }
 
         [HttpPost]
@@ -298,6 +284,11 @@ namespace Store.Web.Controllers
             }
 
             return View("PaymentStep", form);
+        }
+        
+        public IActionResult Finish()
+        {
+            return View();
         }
     }
 }
