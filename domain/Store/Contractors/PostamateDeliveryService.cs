@@ -69,7 +69,7 @@ namespace Store.Contractors
                     return new Form(UniqueCode, orderId, 2, false, new Field[]
                     {
                         new HiddenField("Город", "city", "2"),
-                        new SelectionField("Постомат", "postamate", "4", postamates["4"]),
+                        new SelectionField("Постомат", "postamate", "4", postamates["2"]),
                     });
                 }
                 else
