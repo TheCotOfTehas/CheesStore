@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.Contractors;
+using Store.Web.Contractors;
 using Store.Web.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,26 +10,32 @@ namespace Store.Web.Controllers
     public class OrderController : Controller
     {
         private readonly IProductRepository productRepository;
-        private readonly IOrderRepositorycs orderRepositorycs;
+        private readonly IOrderRepositorycs orderRepository;
         private readonly IEnumerable<IDeliveryService> deliveryServices;
+        private readonly IEnumerable<IPaymentService> paymentServices;
+        private readonly IEnumerable<IWebContractorService> webContractorServices;
         private readonly INotificationService notificationService;
 
 
         public OrderController(IProductRepository productRepository,
                               IOrderRepositorycs orderRepositorycs,
-                              INotificationService notificationService,
-                              IEnumerable<IDeliveryService> deliveryServices)
+                              IEnumerable<IDeliveryService> deliveryServices,
+                              IEnumerable<IPaymentService> paymentServices,
+                              IEnumerable<IWebContractorService> webContractorServices,
+        INotificationService notificationService)
         {
             this.productRepository = productRepository;
-            this.orderRepositorycs = orderRepositorycs;
+            this.orderRepository = orderRepositorycs;
             this.notificationService = notificationService;
             this.deliveryServices = deliveryServices;
+            this.webContractorServices = webContractorServices;
+            this.paymentServices = paymentServices;
         }
 
         [HttpPost]
         public ActionResult SendConfirmationCode(int id, string cellPhone)
         {
-            var order = orderRepositorycs.GetById(id);
+            var order = orderRepository.GetById(id);
             var model = Map(order);
             if (!IsValidCellPhone(cellPhone))
             {
@@ -65,7 +72,7 @@ namespace Store.Web.Controllers
         {
             if (HttpContext.Session.TryGetCart(out Cart cart))
             {
-                var order = orderRepositorycs.GetById(cart.OrderId);
+                var order = orderRepository.GetById(cart.OrderId);
                 OrderModel model = Map(order);
                 return View(model);
             }
@@ -115,11 +122,11 @@ namespace Store.Web.Controllers
             Order order;
             if (HttpContext.Session.TryGetCart(out Cart cart))
             {
-                order = orderRepositorycs.GetById(cart.OrderId);
+                order = orderRepository.GetById(cart.OrderId);
             }
             else
             {
-                order = orderRepositorycs.Create();
+                order = orderRepository.Create();
                 cart = new Cart(order.Id);
             }
 
@@ -140,7 +147,7 @@ namespace Store.Web.Controllers
 
         private void SaveOrderAndCart(Order order, Cart cart)
         {
-            orderRepositorycs.Update(order);
+            orderRepository.Update(order);
 
             cart.TotalCount = order.TotatalCount;
             cart.TotalPrice = order.TotalPrice;
@@ -189,7 +196,11 @@ namespace Store.Web.Controllers
                     },
                 });
             }
-            //todo : сохранить CellPhone
+
+            var order = orderRepository.GetById(id);
+            order.CellPhone = cellPhone;
+            orderRepository.Update(order);
+
             HttpContext.Session.Remove(cellPhone);
 
             var model = new DeliveryModel
@@ -205,10 +216,10 @@ namespace Store.Web.Controllers
         [HttpPost]
         public IActionResult StartDelivery(int id, string uniqueCode)
         {
-            var deliverService = deliveryServices.Single(service => service.UniqueCode == uniqueCode);
-            var order = orderRepositorycs.GetById(id);
+            var deliveryService = deliveryServices.Single(service => service.UniqueCode == uniqueCode);
+            var order = orderRepository.GetById(id);
 
-            var form = deliverService.CreateForm(order);
+            var form = deliveryService.CreateForm(order);
 
             return View("DeliveryStep", form);
         }
@@ -218,14 +229,66 @@ namespace Store.Web.Controllers
         {
             var deliverService = deliveryServices.Single(service => service.UniqueCode == uniqueCode);
 
-            var form = deliverService.MoveNext(id, step, values);
+            var form = deliverService.MoveNextForm(id, step, values);
 
             if (form.IsFinal)
             {
-                return null;
+                var order = orderRepository.GetById(id);
+                order.Delivery = deliverService.GetDelivery(form);
+                orderRepository.Update(order);
+
+                var model = new DeliveryModel
+                {
+                    OrderId = id,
+                    Methods = paymentServices
+                        .ToDictionary(service => service.UniqueCode,
+                                      servise => servise.Title)
+                };
+
+                return View("PaymentMethod", model);
             }
 
             return View("DeliveryStep", form);
+        }
+
+        [HttpPost]
+        public IActionResult StartPayment(int id, string uniqueCode, int step, Dictionary<string, string> values)
+        {
+            var paymentService = paymentServices.Single(service => service.UniqueCode == uniqueCode);
+
+            var order = orderRepository.GetById(id);
+
+            var form = paymentService.CreateForm(order);
+
+            var webContractorService = webContractorServices.SingleOrDefault(service => service.UniqueCode == uniqueCode);
+            if (webContractorService != null)
+                return Redirect(webContractorService.GetUri);
+
+            return View("PaymentStep", form);
+        }
+
+        [HttpPost]
+        public IActionResult NextPayment(int id, string uniqueCode, int step, Dictionary<string, string> values)
+        {
+            var paymentService = paymentServices.Single(service => service.UniqueCode == uniqueCode);
+
+            var form = paymentService.MoveNextForm(id, step, values);
+
+            if (form.IsFinal)
+            {
+                var order = orderRepository.GetById(id);
+                order.Payment = paymentService.GetPayment(form);
+                orderRepository.Update(order);
+
+                return View("Finish");
+            }
+
+            return View("PaymentStep", form);
+        }
+        
+        public IActionResult Finish()
+        {
+            return View();
         }
     }
 }
