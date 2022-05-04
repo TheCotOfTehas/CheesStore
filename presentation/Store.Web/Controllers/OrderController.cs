@@ -11,9 +11,9 @@ namespace Store.Web.Controllers
     {
         private readonly IProductRepository productRepository;
         private readonly IOrderRepositorycs orderRepository;
-        private readonly IEnumerable<IDeliveryService> deliveryServices;
-        private readonly IEnumerable<IPaymentService> paymentServices;
-        private readonly IEnumerable<IWebContractorService> webContractorServices;
+        private readonly IEnumerable<IDeliveryService> deliveryServices;//
+        private readonly IEnumerable<IPaymentService> paymentServices;//
+        private readonly IEnumerable<IWebContractorService> webContractorServices;//
         private readonly INotificationService notificationService;
 
 
@@ -109,7 +109,11 @@ namespace Store.Web.Controllers
             (Order order, Cart cart) = GetOrderAndCart();
 
             var product = productRepository.GetById(productId);
-            order.AddOrUpdateItem(product, count);
+
+            if (order.Items.TryGet(productId, out OrderItem orderItem))
+                orderItem.Count += count;
+            else
+                order.Items.Add(product.Id, product.Price, count);
 
             SaveOrderAndCart(order, cart);
 
@@ -138,7 +142,7 @@ namespace Store.Web.Controllers
         {
             (Order order, Cart cart) = GetOrderAndCart();
 
-            order.GetItem(productId).Count = count;
+            order.Items.Get(productId).Count = count;
 
             SaveOrderAndCart(order, cart);
 
@@ -160,7 +164,7 @@ namespace Store.Web.Controllers
 
             (Order order, Cart cart) = GetOrderAndCart();
 
-            order.RemoveItem(productId);
+            order .Items.Remove(productId);
 
             SaveOrderAndCart(order, cart);
 
