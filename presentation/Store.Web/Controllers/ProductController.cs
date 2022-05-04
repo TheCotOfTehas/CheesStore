@@ -4,15 +4,15 @@ namespace Store.Web.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProductService productServise;
+        private readonly ProductService productService;
 
         public ProductController(ProductService productServise)
         {
-            this.productServise = productServise;
+            this.productService = productServise;
         }
         public IActionResult Index(int id)
         {
-            var product = productServise.GetById(id);
+            var product = productService.GetById(id);
             return View(product);
         }
     }

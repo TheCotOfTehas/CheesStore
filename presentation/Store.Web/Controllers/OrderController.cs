@@ -131,7 +131,7 @@ namespace Store.Web.Controllers
             else
             {
                 order = orderRepository.Create();
-                cart = new Cart(order.Id);
+                cart = new Cart(order.Id, 0m, 0m);
             }
 
             return (order, cart);
@@ -153,8 +153,8 @@ namespace Store.Web.Controllers
         {
             orderRepository.Update(order);
 
-            cart.TotalCount = order.TotatalCount;
-            cart.TotalPrice = order.TotalPrice;
+            cart = new Cart(order.Id, order.TotatalCount, order.TotalPrice);
+
             HttpContext.Session.Set(cart);
         }
 

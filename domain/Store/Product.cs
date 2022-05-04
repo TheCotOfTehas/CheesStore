@@ -19,7 +19,7 @@ public class Product
         Price = prise;
     }
 
-    internal static bool IsСategories(string query)
+    public static bool IsСategories(string query)
     {
         if (string.IsNullOrEmpty(query)) return false;
 
