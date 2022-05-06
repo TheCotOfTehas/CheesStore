@@ -1,12 +1,10 @@
-﻿@using Store.Web.Controllers
-@using Store.Contractors
-
-@model Form
+﻿@using Store.Web.App
+@model OrderModel
 @{
     ViewData["Title"] = "Заказ оформлен";
 }
 
-<p>Заказ оформлен. Мы готови его чтобы передать в службу доставки</p>
-
 <p>
-    <a href="@Url.Action("Index", "Home")">На главную страницу к магазину</a>
+    Заказ оформлен. Мы собираем его, чтобы передать в службу доставки.
+    Ждите SMS.
+</p>
