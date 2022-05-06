@@ -9,6 +9,7 @@ public class Product
     public string Сategories { get; }
     public string Description { get; }
     public decimal Price { get; }
+    public decimal Count { get; }
     public Product( int id, string name, string cat, string manufacturer, string description, decimal prise)
     {
         Id = id;

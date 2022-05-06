@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store
 {
-    public interface IOrderRepositorycs
+    public interface IOrderRepository
     {
         Order Create();
         Order GetById(int id);
