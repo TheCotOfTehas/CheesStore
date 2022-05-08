@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Store.YandexKassa.Areas.YandexKassa.Controllers.Models
+@model ExampleModel
+@{
     ViewData["Title"] = "Заказ оплачен";
 }
 
@@ -7,3 +9,10 @@
 <p>
     <a  href="@Url.Action("Finish", "Order")">Вернутся в магазин</a>
 </p>
+
+<form action="@Model.ReturnUri" method="post">
+    <input type="hidden" name="serviceName" value="YandexKassa" />
+    <input type="hidden" name="step" value="1" />
+    <input type="hidden" name="values[orderId]" value="@Model.OrderId" />
+    <button type="submit" class="btn btn-success">Далее</button>
+</form>

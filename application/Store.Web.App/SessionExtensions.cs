@@ -1,11 +1,16 @@
-﻿using Store.Web.Models;
+﻿using Microsoft.AspNetCore.Http;
 using System.Text;
 
-namespace Store.Web
+namespace Store.Web.App
 {
     public static class SessionExtensions
     {
         private const string key = "Cart";
+
+        public static void RemoveCart(this ISession session, string key)
+        {
+            session.RemoveCart(key);
+        }
         public static void Set(this ISession session, Cart value)
         {
             if(value == null) return;
@@ -32,15 +37,12 @@ namespace Store.Web
                     var totalCount = reader.ReadDecimal();
                     var totalPrice = reader.ReadDecimal();
 
-                    value = new Cart(orderId)
-                    {
-                        TotalCount = totalCount,
-                        TotalPrice = totalPrice,
-                    };
+                    value = new Cart(orderId, totalCount, totalPrice);
 
                     return true;
                 }
             }
+
             value = null;
             return false;
         }
