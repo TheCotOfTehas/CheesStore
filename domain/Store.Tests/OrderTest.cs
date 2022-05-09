@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,58 +11,57 @@ namespace Store.Tests
     public class OrderTest
     {
         [Fact]
-        public void Order_WithNullItems()
+        public void TotalCount_WithEmptyItems_ReturnsZero()
         {
-            Assert.Throws<ArgumentNullException>(() => new Order(1, null));
+            var order = CreateEmptyTestOrder();
+
+            Assert.Equal(0, order.TotatalCount);
         }
 
-        [Fact]
-        public void TotalCount_WithEmpatyItems()
+        private static Order CreateEmptyTestOrder()
         {
-            var order = new Order(1, Array.Empty<OrderItem>());
-
-            Assert.Equal(0m, order.TotatalCount);
-        }
-        
-        [Fact]
-        public void TotalSumPriseWithNonEmpatyItems()
-        {
-            var listItem = new List<OrderItem>()
+            return new Order(new OrderDto
             {
-                new OrderItem(1, 1, 50),
-                new OrderItem(1, 1, 100),
-                new OrderItem(1, 2, 150),
-            };
-            var items = new Order(1, listItem);
-
-            Assert.Equal(450m, items.TotalPrice);
-        }
-
-        [Fact]
-        public void TotalCount_WithNonEmpatyItems()
-        {
-            var listItem = new List<OrderItem>()
-            {
-                new OrderItem(1, 1, 50),
-                new OrderItem(1, 5, 100),
-                new OrderItem(1, 2, 150),
-            };
-            var items = new Order(1, listItem);
-
-            Assert.Equal(1 + 5 + 2, items.TotatalCount);
+                Id = 1,
+                Items = new OrderItemDto[0]
+            });
         }
 
         [Fact]
         public void TotalPrice_WithEmptyItems_ReturnsZero()
         {
-            var order = new Order(1, new List<OrderItem>()
-            {
-                new OrderItem(1,6m, 100m),
-                new OrderItem(2,1m, 100m),
-                new OrderItem(3,1m, 100m),
-            });
+            var order = CreateEmptyTestOrder();
 
-            Assert.Equal(100m * 6 + 1*100 +1*100, order.TotalPrice);
+            Assert.Equal(0m, order.TotatalCount);
+        }
+
+        [Fact]
+        public void TotalCount_WithNonEmptyItems_CalcualtesTotalCount()
+        {
+            var order = CreateTestOrder();
+
+            Assert.Equal(3 + 5, order.TotatalCount);
+        }
+
+        private static Order CreateTestOrder()
+        {
+            return new Order(new OrderDto
+            {
+                Id = 1,
+                Items = new[]
+                {
+                    new OrderItemDto { ProductId = 1, Price = 10m, Count = 3},
+                    new OrderItemDto { ProductId = 2, Price = 100m, Count = 5},
+                }
+            });
+        }
+
+        [Fact]
+        public void TotalPrice_WithNonEmptyItems_CalcualtesTotalPrice()
+        {
+            var order = CreateTestOrder();
+
+            Assert.Equal(3 * 10m + 5 * 100m, order.TotalPrice);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,60 +11,68 @@ namespace Store.Tests
     public class OrderItemTest
     {
         [Fact]
-        public void OrderItem_WithZeroCount()
+        public void OrderItem_WithZeroCount_ThrowsArgumentOutOfRangeException()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 int count = 0;
-                new OrderItem(1, count, 0m);
+                OrderItem.DtoFactory.Create(new OrderDto(), 1, 10m, count);
             });
         }
 
         [Fact]
-        public void OrderItem_WithLessZeroCount()
+        public void OrderItem_WithNegativeCount_ThrowsArgumentOutOfRangeException()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 int count = -1;
-                new OrderItem(1, count, 0m);
+                OrderItem.DtoFactory.Create(new OrderDto(), 1, 10m, count);
             });
         }
+
         [Fact]
-        public void OrderItem_WithMoreZeroCount()
+        public void OrderItem_WithPositiveCount_SetsCount()
         {
-            var orderItem = new OrderItem(1, 1, 4m);
+            var orderItem = OrderItem.DtoFactory.Create(new OrderDto(), 1, 10m, 2);
+
             Assert.Equal(1, orderItem.ProductId);
-            Assert.Equal(1, orderItem.Count);
-            Assert.Equal(4m, orderItem.Price);
+            Assert.Equal(10m, orderItem.Price);
+            Assert.Equal(2, orderItem.Count);
         }
 
         [Fact]
-        public void Count_WithNegativValue_ThrowArgumentOutOfRangeException()
+        public void Count_WithNegativeValue_ThrowsArgumentOfRangeException()
         {
-            var item = new OrderItem(1, 1, 10m);
+            var orderItemDto = OrderItem.DtoFactory.Create(new OrderDto(), 1, 10m, 30);
+            var orderItem = OrderItem.Mapper.Map(orderItemDto);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                item.Count = -1;
+                orderItem.Count = -1;
             });
         }
 
         [Fact]
-        public void Count_WithZeroValue_ThrowArgumentOutOfRangeException()
+        public void Count_WithZeroValue_ThrowsArgumentOfRangeException()
         {
-            var item = new OrderItem(1, 1, 10m);
+            var orderItemDto = OrderItem.DtoFactory.Create(new OrderDto(), 1, 10m, 30);
+            var orderItem = OrderItem.Mapper.Map(orderItemDto);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                item.Count = 0;
+                orderItem.Count = 0;
             });
         }
 
         [Fact]
-        public void Count_WithPozitivValue_SetValue()
+        public void Count_WithPositiveValue_SetsValue()
         {
-            var item = new OrderItem(1, 1, 10m);
-            item.Count = 25;
+            var orderItemDto = OrderItem.DtoFactory.Create(new OrderDto(), 1, 10m, 30);
+            var orderItem = OrderItem.Mapper.Map(orderItemDto);
 
-            Assert.Equal(25, item.Count);
+            orderItem.Count = 10;
+
+            Assert.Equal(10, orderItem.Count);
         }
     }
 }
