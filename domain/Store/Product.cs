@@ -60,7 +60,8 @@ public class Product
 
     public static class DtoFactory
     {
-        public static ProductDto Create(string categories,
+        public static ProductDto Create(int id,
+                                     string categories,
                                      string manufacturer,
                                      string title,
                                      string description,
@@ -72,6 +73,7 @@ public class Product
 
             return new ProductDto
             {
+                Id = id,
                 Сategories = categories,
                 Manufacturer = manufacturer?.Trim(),
                 Title = title.Trim(),

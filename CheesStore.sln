@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.YandexKassa", "plugin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "application", "application", "{53211110-218B-4FC8-9953-1F53555EA5E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Web.App", "application\Store.Web.App\Store.Web.App.csproj", "{F6424CA8-729F-4C9E-9B9B-99E8A4DD79EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Web.App", "application\Store.Web.App\Store.Web.App.csproj", "{F6424CA8-729F-4C9E-9B9B-99E8A4DD79EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Data.EF", "infrastructure\Store.Data.EF\Store.Data.EF.csproj", "{6F14A3DA-A25B-43CD-AFD3-0E38568E6AC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{F6424CA8-729F-4C9E-9B9B-99E8A4DD79EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6424CA8-729F-4C9E-9B9B-99E8A4DD79EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6424CA8-729F-4C9E-9B9B-99E8A4DD79EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F14A3DA-A25B-43CD-AFD3-0E38568E6AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F14A3DA-A25B-43CD-AFD3-0E38568E6AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F14A3DA-A25B-43CD-AFD3-0E38568E6AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F14A3DA-A25B-43CD-AFD3-0E38568E6AC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{15BEEF68-00D9-40BD-81E9-63CE9C08C9C3} = {5BE51CA9-F240-4803-ABBC-88298CB0A2DE}
 		{A647E075-CBD1-4D42-A6BC-8D95A42C0B71} = {AB6200D1-CDC9-43ED-A272-1FEDF92D0E92}
 		{F6424CA8-729F-4C9E-9B9B-99E8A4DD79EB} = {53211110-218B-4FC8-9953-1F53555EA5E8}
+		{6F14A3DA-A25B-43CD-AFD3-0E38568E6AC5} = {F66A23E9-39B9-4C9F-B4F2-DA3AC8DABAB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C209959E-60BB-4BF6-98BF-D8266DBFAEA8}
