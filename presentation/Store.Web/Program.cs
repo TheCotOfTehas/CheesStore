@@ -4,29 +4,34 @@ using Store.Memory;
 using Store.Web.App;
 using Store.Web.Contractors;
 using Store.YandexKassa;
+using Store.Data.EF;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+string connectionString = builder.Configuration.GetConnectionString("Store");
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
+services.AddControllersWithViews();
+services.AddHttpContextAccessor();
+services.AddDistributedMemoryCache();
+services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromSeconds(20);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddSingleton<IProductRepository, ProductReposetory>();
-builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
-builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
-builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
-builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
-builder.Services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
-builder.Services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
-builder.Services.AddSingleton<ProductService>();
-builder.Services.AddSingleton<OrderService>();
+//services.AddSingleton<IProductRepository, ProductReposetory>();
+//services.AddSingleton<IOrderRepository, OrderRepository>();
+services.AddEfRepositories(connectionString);
+
+services.AddSingleton<INotificationService, DebugNotificationService>();
+services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
+services.AddSingleton<IPaymentService, CashPaymentService>();
+services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
+services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
+services.AddSingleton<ProductService>();
+services.AddSingleton<OrderService>();
 
 var app = builder.Build();
 

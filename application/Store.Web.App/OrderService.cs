@@ -83,7 +83,7 @@ namespace Store.Web.App
         {
             var productId = order.Items.Select(x => x.ProductId);
 
-            return productRepository.GetAllByIds(productId);
+            return productRepository.GetAllCategory(productId);
         }
 
         public OrderModel AppProduct(int productId, int count)
@@ -108,6 +108,8 @@ namespace Store.Web.App
                 orderItem.Count += count;
             else
                 order.Items.Add(product.Id, product.Price, count);
+
+            orderRepository.Update(order);
         }
 
         internal void UpdateSession(Order order)

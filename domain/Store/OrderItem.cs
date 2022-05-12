@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,33 +9,62 @@ namespace Store
 {
     public class OrderItem
     {
-        public int ProductId { get; }
-        private decimal count;
-        public decimal Count 
+        private readonly OrderItemDto dto;
+
+        public int ProductId => dto.ProductId;
+
+        public int Count
         {
-            get { return count; }
-            set 
+            get { return dto.Count; }
+            set
             {
-                ThrowIfValidateCount(value);
-                count = value;
+                ThrowIfInvalidCount(value);
+
+                dto.Count = value;
             }
         }
-        public decimal Price { get; }
-
-
-        public OrderItem(int productId, decimal count, decimal price)
+        public decimal Price
         {
-            ThrowIfValidateCount(count);
-
-            ProductId = productId;
-            Count = count;
-            Price = price;
+            get => dto.Price;
+            set => dto.Price = value;
         }
 
-        private static void ThrowIfValidateCount(decimal count)
+
+        internal OrderItem(OrderItemDto dto)
+        {
+            this.dto = dto;
+        }
+
+        private static void ThrowIfInvalidCount(int count)
         {
             if (count <= 0)
-                throw new ArgumentOutOfRangeException(nameof(count), "Count do not be less than zero");
+                throw new ArgumentOutOfRangeException("Count must be greater than zero.");
+        }
+
+        public static class DtoFactory
+        {
+            public static OrderItemDto Create(OrderDto order, int productId, decimal price, int count)
+            {
+                if (order == null)
+                    throw new ArgumentNullException(nameof(order));
+
+                ThrowIfInvalidCount(count);
+
+                return new OrderItemDto
+                {
+                    ProductId = productId,
+                    Price = price,
+                    Count = count,
+                    Order = order,
+                };
+            }
+        }
+
+        public static class Mapper
+        {
+            public static OrderItem Map(OrderItemDto dto) => new OrderItem(dto);
+
+            public static OrderItemDto Map(OrderItem domain) => domain.dto;
         }
     }
 }

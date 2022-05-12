@@ -1,11 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Store.Memory
+namespace Store.Data.EF
 {
-    public class ProductReposetory : IProductRepository
+    internal class ProductRepository : IProductRepository
     {
         private readonly Product[] products = new[]
-        {
+{
             Product.Mapper.Map(Product.DtoFactory.Create(1, "Chees", "Podoksha", "Качотта", "Тут описание", 150m)),
             Product.Mapper.Map(Product.DtoFactory.Create(2, "Chees", "Podoksha", "Рикотта", "Тут описание", 80m)),
             Product.Mapper.Map(Product.DtoFactory.Create(3,"Chees", "Podoksha", "Качокавалла", "Тут описание", 190m)),
@@ -14,11 +18,20 @@ namespace Store.Memory
             Product.Mapper.Map(Product.DtoFactory.Create(6, "Оборудование", "Podoksha", "Лира", "Тут описание", 1200m))
         };
 
-        public Product[] GetAllByСategories(string query)
+        public Product[] GetAllByСategories(string query)  
         {
             return products
                  .Where(chees => chees.Сategories.Contains(query))
                  .ToArray();
+        }
+
+        public Product[] GetAllCategory(IEnumerable<int> productIds)
+        {
+            var foundProducts = from product in products
+                                join productId in productIds on product.Id equals productId
+                                select product;
+
+            return foundProducts.ToArray();
         }
 
         public Product[] GetAllByTitleOrManufacture(string query)
@@ -33,10 +46,10 @@ namespace Store.Memory
             return products.Single(product => product.Id == id);
         }
 
-        public Product[] GetAllCategory(IEnumerable<int> productIds)
+        public Product[] GetAllCategory(IEnumerable<string> categorys)
         {
             var foundProducts = from product in products
-                                join productId in productIds on product.Id equals productId
+                                join category in categorys on product.Сategories equals category
                                 select product;
 
             return foundProducts.ToArray();

@@ -1,23 +1,51 @@
-﻿using System;
+﻿using Store.Data;
+using System;
 
 namespace Store;
 public class Product
 {
-    public int Id { get; }
-    public string Title { get; }
-    public string Manufacturer { get; }
-    public string Сategories { get; }
-    public string Description { get; }
-    public decimal Price { get; }
-    public decimal Count { get; }
-    public Product( int id, string name, string cat, string manufacturer, string description, decimal prise)
+    private readonly ProductDto dto;
+
+    public int Id => dto.Id;
+
+
+
+    public string Title
     {
-        Id = id;
-        Title = name;
-        Сategories = cat;
-        Manufacturer = manufacturer;
-        Description = description;
-        Price = prise;
+        get => dto.Title;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException(nameof(Title));
+
+            dto.Title = value.Trim();
+        }
+    }
+
+    public string Manufacturer
+    {
+        get => dto.Manufacturer;
+        set => dto.Manufacturer = value?.Trim();
+    }
+    public string Сategories
+    {
+        get => dto.Сategories;
+        set => dto.Сategories = value?.Trim();
+    }
+    public string Description
+    {
+        get => dto.Description;
+        set => dto.Description = value;
+    }
+    public decimal Price
+    {
+        get => dto.Price;
+        set => dto.Price = value;
+    }
+    public decimal Count { get; }
+    public Product(ProductDto dto) 
+    { 
+        this.dto = dto;
     }
 
     public static bool IsСategories(string query)
@@ -28,5 +56,37 @@ public class Product
             return false;
 
         return  true;
+    }
+
+    public static class DtoFactory
+    {
+        public static ProductDto Create(int id,
+                                     string categories,
+                                     string manufacturer,
+                                     string title,
+                                     string description,
+                                     decimal price)
+        {
+
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException(nameof(title));
+
+            return new ProductDto
+            {
+                Id = id,
+                Сategories = categories,
+                Manufacturer = manufacturer?.Trim(),
+                Title = title.Trim(),
+                Description = description?.Trim(),
+                Price = price,
+            };
+        }
+    }
+
+    public static class Mapper
+    {
+        public static Product Map(ProductDto dto) => new Product(dto);
+
+        public static ProductDto Map(Product domain) => domain.dto;
     }
 }

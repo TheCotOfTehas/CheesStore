@@ -10,7 +10,7 @@ namespace Store.Tests
     {
         public Product[] ResultOfGetAllByCategory { get; set; }
         public Product[] ResultOfGetByTitleOrManufaktyr { get; set; }
-        public Product[] GetAllByIds(IEnumerable<int> productIds)
+        public Product[] GetAllCategory(IEnumerable<int> productIds)
         {
             throw new NotImplementedException();
         }
