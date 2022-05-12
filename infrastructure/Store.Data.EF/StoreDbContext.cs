@@ -85,7 +85,7 @@ namespace Store.Data.EF
             modelBuilder.Entity<ProductDto>(action =>
             {
                 action.Property(dto => dto.Сategories)
-                      .HasMaxLength(30)
+                      .HasMaxLength(17)
                       .IsRequired();
 
                 action.Property(dto => dto.Title)

@@ -8,6 +8,7 @@ using Store.Data.EF;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+string connectionString = builder.Configuration.GetConnectionString("Store");
 
 // Add services to the container.
 services.AddControllersWithViews();
@@ -22,7 +23,8 @@ services.AddSession(options =>
 
 //services.AddSingleton<IProductRepository, ProductReposetory>();
 //services.AddSingleton<IOrderRepository, OrderRepository>();
-services.AddEfRepositories(builder.Configuration.GetConnectionString("Store"));
+services.AddEfRepositories(connectionString);
+
 services.AddSingleton<INotificationService, DebugNotificationService>();
 services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
 services.AddSingleton<IPaymentService, CashPaymentService>();

@@ -16,7 +16,6 @@ namespace Store.Memory
             }
         }
 
-        //Далие????????
         public void Post()
         {
             throw new NotImplementedException();

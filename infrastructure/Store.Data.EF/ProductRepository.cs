@@ -25,6 +25,15 @@ namespace Store.Data.EF
                  .ToArray();
         }
 
+        public Product[] GetAllCategory(IEnumerable<int> productIds)
+        {
+            var foundProducts = from product in products
+                                join productId in productIds on product.Id equals productId
+                                select product;
+
+            return foundProducts.ToArray();
+        }
+
         public Product[] GetAllByTitleOrManufacture(string query)
         {
             return products.Where(product => product.Manufacturer.Contains(query) ||
@@ -37,10 +46,10 @@ namespace Store.Data.EF
             return products.Single(product => product.Id == id);
         }
 
-        public Product[] GetAllByIds(IEnumerable<int> productIds)
+        public Product[] GetAllCategory(IEnumerable<string> categorys)
         {
             var foundProducts = from product in products
-                                join productId in productIds on product.Id equals productId
+                                join category in categorys on product.Сategories equals category
                                 select product;
 
             return foundProducts.ToArray();
