@@ -92,7 +92,7 @@ namespace Store.Data.EF
                       .IsRequired();
 
                 action.Property(dto => dto.Price)
-                      .HasColumnType("money");
+                .HasColumnType("money");
 
                 action.HasData(
                     new ProductDto

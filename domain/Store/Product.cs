@@ -8,8 +8,6 @@ public class Product
 
     public int Id => dto.Id;
 
-
-
     public string Title
     {
         get => dto.Title;
@@ -83,7 +81,7 @@ public class Product
         }
     }
 
-    public static class Mapper
+        public static class Mapper
     {
         public static Product Map(ProductDto dto) => new Product(dto);
 
