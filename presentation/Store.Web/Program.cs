@@ -1,40 +1,73 @@
 using Store;
 using Store.Contractors;
-using Store.Memory;
+using Microsoft.EntityFrameworkCore;
 using Store.Web.App;
 using Store.Web.Contractors;
 using Store.YandexKassa;
 using Store.Data.EF;
+using Store.Memory;
 
-var builder = WebApplication.CreateBuilder(args);
-var services = builder.Services;
-string connectionString = builder.Configuration.GetConnectionString("Store");
+//Создаю экзнмпляр класса  WebApplicationBuilder (Класс конструктора веб- приложений)
+var builder = WebApplication.CreateBuilder();
+// Получаю строку подключения которая у меня хранится в appsettings.json
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Add services to the container.
-services.AddControllersWithViews();
-services.AddHttpContextAccessor();
-services.AddDistributedMemoryCache();
-services.AddSession(options =>
+// добавляем контекст StoreDbContext в качестве сервиса(пока нет понимания слово сервис) в приложение
+builder.Services.AddDbContext<StoreDbContext>(options => options.UseSqlServer(connectionString));
+
+// Нужно добавить чтобы иметь возможность добавлять контроллеры в мое приложение ASP.NET Core
+// Итак AddControllersWithViews, охватывает MVC.
+//Добавляет службы для контроллеров в указанную коллекцию IServiceCollection .
+//Этот метод не будет регистрировать службы, используемые для страниц.
+builder.Services.AddControllersWithViews();
+
+//Приложения ASP.NET Core получают доступ HttpContextчерез интерфейс IHttpContextAccessor
+//и его реализацию по умолчанию HttpContextAccessor .
+//Это необходимо использовать только IHttpContextAccessor тогда,
+//когда вам нужен доступ к HttpContext внутренней части службы.
+builder.Services.AddHttpContextAccessor();
+//Эта штука нужна для Распределенного кэширования в ASP.NET Core
+//Распределенный кеш — это кеш, совместно используемый несколькими серверами приложений,
+//который обычно поддерживается как внешняя служба для серверов приложений,
+//которые к нему обращаются.
+builder.Services.AddDistributedMemoryCache();
+// Для управление сеансом и состоянием в ASP.NET Core  делаем .AddSession
+builder.Services.AddSession(options =>
 {
+    //Создаёт значение времени ожидания в appsettings.json.
+    //Это значение будет использоваться для настройки времени ожидания сеанса и авторизации.
     options.IdleTimeout = TimeSpan.FromSeconds(20);
+    //Получает или задает значение, указывающее, доступен ли файл cookie клиентскому сценарию
     options.Cookie.HttpOnly = true;
+    //Указывает, необходим ли этот файл cookie для правильной работы приложения.
+    //Если true, то проверки политики согласия можно обойти. Значение по умолчанию неверно.
     options.Cookie.IsEssential = true;
 });
 
-//services.AddSingleton<IProductRepository, ProductReposetory>();
-//services.AddSingleton<IOrderRepository, OrderRepository>();
-services.AddEfRepositories(connectionString);
+// Короче я сделал расширение чтобы  одной командой  подкдключить 
+// несколько БД. 
+builder.Services.AddEfRepositories(connectionString);
 
-services.AddSingleton<INotificationService, DebugNotificationService>();
-services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
-services.AddSingleton<IPaymentService, CashPaymentService>();
-services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
-services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
-services.AddSingleton<ProductService>();
-services.AddSingleton<OrderService>();
+//добовляю сервис с инструментами push-уведомлений
+builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
 
+// добовляю сервис с инструментами push-уведомлений
+builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
+// добовляю сервис с инструментами для оплаты наличными
+builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
+// добовляю сервис с инструментами для оплаты яндекс каасой
+builder.Services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
+
+builder.Services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
+
+// добовляю сервис с инструментами для работы с Product репозиторием
+builder.Services.AddSingleton<ProductService>();
+// добовляю сервис с инструментами для работы с заказами
+builder.Services.AddSingleton<OrderService>();
+
+// тут создём веб-приложение, используемое для настройки конвейера HTTP и маршрутов.
 var app = builder.Build();
-
+//Ниже пока не разбирал
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

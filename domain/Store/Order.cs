@@ -100,14 +100,5 @@ namespace Store
 
             public static OrderDto Map(Order domain) => domain.dto;
         }
-
-        //private static void ThrowProductException(string messege, int produktId)
-        //{
-        //    var exception = new InvalidOperationException(messege);
-
-        //    exception.Data["produktId"] = produktId;
-
-        //    throw exception;
-        //}
     }
 }

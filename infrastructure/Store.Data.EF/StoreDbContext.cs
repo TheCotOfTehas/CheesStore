@@ -19,7 +19,11 @@ namespace Store.Data.EF
 
         public StoreDbContext(DbContextOptions<StoreDbContext> options)
             : base(options)
-        { }
+        {
+            Database.EnsureCreated();
+        }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -93,7 +97,6 @@ namespace Store.Data.EF
 
                 action.Property(dto => dto.Price)
                 .HasColumnType("money");
-
                 action.HasData(
                     new ProductDto
                     {
@@ -101,7 +104,10 @@ namespace Store.Data.EF
                         Сategories = "Chees",
                         Manufacturer = "Podoksha",
                         Title = "Качотта",
-                        Description = "Тут описание",
+                        Description = "Сыр качо́тта — итальянский сыр, относится к полумягким сортам. " +
+                            "Его готовят из молока овец, буйволов, коз или коров. " +
+                            "Такой сыр выдерживается от недели до нескольких месяцев, иногда дольше. " +
+                            "Часто в качотту добавляют орехи и травы.",
                         Price = 150m,
                     },
                     new ProductDto
@@ -110,7 +116,12 @@ namespace Store.Data.EF
                         Сategories = "Chees",
                         Manufacturer = "Подносковье",
                         Title = "Адыгейский",
-                        Description = "Тут описание",
+                        Description = "Наименование «адыгейский сыр» закрепилось от названия Республики Адыгея, " +
+                            "черкесское население которой массово производит этот сыр, в том числе и на продажу." +
+                            "Брендом «Адыгейский сыр» он стал в 1980 году, "+
+                            "когда началось его массовое промышленное производство.В это время о нём публикуется статья в журнале «Молочная промышленность» за 1980 год:"+
+                            "«Настоящий адыгейский сыр пахнет свежим молоком и полевыми цветами," +
+                            "относится к диетическим продуктам питания и обладает высокой пищевой ценностью»[2],",
                         Price = 100m,
                     },
                     new ProductDto
@@ -119,8 +130,40 @@ namespace Store.Data.EF
                         Сategories = "Оборудование",
                         Manufacturer = "Podoksha",
                         Title = "Лира",
-                        Description = "Тут описание",
+                        Description = "Предназначение лиры – разрезание сырного сгустка в процессе производства сыра. " +
+                            "Лира для сыра позволяет это сделать буквально за пару движений, " +
+                            "а главное идеально ровными кусочками (в отличие от обычной нарезки ножом).. ",
                         Price = 1200m,
+                    },
+                    new ProductDto
+                    {
+                        Id = 4,
+                        Сategories = "Chees",
+                        Manufacturer = "Лебедева",
+                        Title = "Маскарпоне",
+                        Description = "итальянский сливочный сыр. Происходит из региона Ломбардия. " +
+                            "Считается, что впервые его стали делать в области между городками Лоди и Аббиатеграссо " +
+                            "к юго-западу от Милана в конце XVI — начале XVII века. " +
+                            "Часто используется в приготовлении чизкейков и других десертов.",
+                        Price = 60m,
+                    },
+                    new ProductDto
+                    {
+                        Id = 5,
+                        Сategories = "Chees",
+                        Manufacturer = "Podoksha",
+                        Title = "Качокава́лло",
+                        Description = "Качокава́лло - сырные мешочки. Вытяжной полутвердый сыр из коровьего молока с вызреванием более 1.5 -2 месяца.",
+                        Price = 190m,
+                    },
+                    new ProductDto
+                    {
+                        Id = 6,
+                        Сategories = "Chees",
+                        Manufacturer = "Podoksha",
+                        Title = "Рикотта",
+                        Description = "Мягкий творожный сыр двойной варки",
+                        Price = 80m,
                     }
                 );
             });

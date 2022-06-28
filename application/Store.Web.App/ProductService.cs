@@ -18,11 +18,6 @@ namespace Store.Web.App
 
             return products.Select(Map)
                            .ToArray();
-            //var categories = productRepository.GetAllByСategories(query);
-            //if (categories.Length != 0)
-            //    return categories;
-            //else
-            //    return productRepository.GetAllByTitleOrManufacture(query);
         }
 
         private ProductModel Map(Product product)

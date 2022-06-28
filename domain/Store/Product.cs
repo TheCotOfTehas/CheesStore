@@ -81,10 +81,10 @@ public class Product
         }
     }
 
-        public static class Mapper
-    {
+     public static class Mapper
+     {
         public static Product Map(ProductDto dto) => new Product(dto);
 
         public static ProductDto Map(Product domain) => domain.dto;
-    }
+     }
 }
