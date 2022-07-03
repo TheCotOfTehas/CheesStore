@@ -8,11 +8,12 @@ namespace Store
 {
     public interface IProductRepository
     {
-        Product[] GetAllByСategories(string categoryId);
+        Task<Product[]> GetAllByСategoriesAsync(string categoryId);
 
-        Product[] GetAllByTitleOrManufacture(string titlePart);
+        Task<Product[]> GetAllByTitleOrManufactureAsync(string titlePart);
 
-        Product GetById(int id);
-        Product[] GetAllCategory(IEnumerable<int> productIds);
+        Task<Product> GetByIdAsync(int id);
+
+        Task<Product[]> GetAllCategoryAsync(IEnumerable<int> productIds);
     }
 }

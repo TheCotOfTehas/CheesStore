@@ -11,10 +11,11 @@ namespace Store.Web.Controllers
         {
             this.productService = productServise;
         }
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
-            var product = productService.GetById(id);
-            return View(product);
+            var product = await productService.GetByIdAsync(id);
+            return View("Index", product);
         }
     }
 }
+ 

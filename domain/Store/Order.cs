@@ -1,9 +1,4 @@
 ﻿using Store.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store
 {
@@ -17,7 +12,7 @@ namespace Store
 
         public string CellPhone
         {
-            get => dto.CellPhone;
+             get => dto.CellPhone;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))

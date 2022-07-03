@@ -11,9 +11,9 @@ namespace Store.Web.Controllers
         {
             this.productServise = productServise;
         }
-        public IActionResult Index(string query)
+        public async Task<IActionResult> Index(string query)
         {
-            var product = productServise.GetAllByQuery(query); 
+            var product = await productServise.GetAllByQueryAsync(query); 
             return View("Index", product);
         }
     }

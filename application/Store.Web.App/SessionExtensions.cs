@@ -7,9 +7,9 @@ namespace Store.Web.App
     {
         private const string key = "Cart";
 
-        public static void RemoveCart(this ISession session, string key)
+        public static void RemoveCart(this ISession session)
         {
-            session.RemoveCart(key);
+            session.Remove(key);
         }
         public static void Set(this ISession session, Cart value)
         {

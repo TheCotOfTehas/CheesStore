@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder();
 // Получаю строку подключения которая у меня хранится в appsettings.json
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// добавляем контекст StoreDbContext в качестве сервиса(пока нет понимания слово сервис) в приложение
+// добавляем контекст StoreDbContext в качестве сервиса в приложение
 builder.Services.AddDbContext<StoreDbContext>(options => options.UseSqlServer(connectionString));
 
 // Нужно добавить чтобы иметь возможность добавлять контроллеры в мое приложение ASP.NET Core
@@ -48,6 +48,11 @@ builder.Services.AddSession(options =>
 // несколько БД. 
 builder.Services.AddEfRepositories(connectionString);
 
+
+
+
+
+
 //добовляю сервис с инструментами push-уведомлений
 builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
 
@@ -60,11 +65,26 @@ builder.Services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
 
 builder.Services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
 
-// добовляю сервис с инструментами для работы с Product репозиторием
-builder.Services.AddSingleton<ProductService>();
-// добовляю сервис с инструментами для работы с заказами
-builder.Services.AddSingleton<OrderService>();
+//builder.Services.AddScoped<INotificationService, DebugNotificationService>();
 
+//builder.Services.AddScoped<IDeliveryService, PostamateDeliveryService>();
+
+//builder.Services.AddScoped<IPaymentService, CashPaymentService>();
+
+//builder.Services.AddScoped<IPaymentService, YandexKassaPaymentService>();
+
+//builder.Services.AddScoped<IWebContractorService, YandexKassaPaymentService>();
+
+
+
+
+
+// добовляю сервис с инструментами для работы с Product репозиторием
+//builder.Services.AddSingleton<ProductService>();
+builder.Services.AddScoped<ProductService>();
+// добовляю сервис с инструментами для работы с заказами
+//builder.Services.AddSingleton<OrderService>();
+builder.Services.AddScoped<OrderService>();
 // тут создём веб-приложение, используемое для настройки конвейера HTTP и маршрутов.
 var app = builder.Build();
 //Ниже пока не разбирал
@@ -76,6 +96,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//app.UseMiddleware<CounterMiddleware>(); Это тестю
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

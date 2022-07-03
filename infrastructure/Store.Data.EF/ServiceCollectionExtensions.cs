@@ -1,12 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Store.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Store.Data.EF;
 
 namespace Store.Data.EF
 {
@@ -21,14 +14,29 @@ namespace Store.Data.EF
                 },
                 ServiceLifetime.Transient
             );
+            /*
+             builder.Services.AddTransient<ICounter, RandomCounter>();
+             builder.Services.AddTransient<CounterService>();
+            */
 
+            /*
+             builder.Services.AddScoped<ICounter, RandomCounter>();
+             builder.Services.AddScoped<CounterService>();
+             */
+
+            /*
+             builder.Services.AddSingleton<ICounter, RandomCounter>();
+             builder.Services.AddSingleton<CounterService>();
+             */
+            //На каждый запрос пользователя создаём свой словарь
             services.AddScoped<Dictionary<Type, StoreDbContext>>(); 
-            services.AddSingleton<DbContextFactory>(); 
 
-            services.AddSingleton<IProductRepository, ProductRepository>();
-            services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddScoped<DbContextFactory>(); 
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }
     }
 }
+ 

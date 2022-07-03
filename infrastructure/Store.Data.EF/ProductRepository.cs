@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,46 +14,56 @@ namespace Store.Data.EF
         {
             this.dbContextFactory = dbContextFactory;
         }
-        public Product[] GetAllByСategories(string query)  
+        public async Task<Product[]> GetAllByСategoriesAsync(string query)  
         {
             var context = dbContextFactory.Create(typeof(ProductRepository));
 
-            var productsDto = context
-                .Products
+            var dtos = await context.Products
                 .Where(chees => chees.Сategories == query)
-                .ToArray();
+                .ToArrayAsync();
 
-            return productsDto.Select(Product.Mapper.Map).ToArray();
+            return dtos.Select(Product.Mapper.Map)
+                           .ToArray();
         }
 
-        public Product[] GetAllCategory(IEnumerable<int> productIds)
+        public async Task<Product[]> GetAllCategoryAsync(IEnumerable<int> bookIds)
         {
-            var context = dbContextFactory.Create(typeof(ProductRepository));
-            return context
-                .Products
-                .Where(product => productIds.Contains(product.Id))
-                .Select(Product.Mapper.Map)
-                .ToArray();
+            var dbContext = dbContextFactory.Create(typeof(ProductRepository));
+
+            var dtos = await dbContext.Products
+                                      .Where(book => bookIds.Contains(book.Id))
+                                      .ToArrayAsync();
+
+            return dtos.Select(Product.Mapper.Map)
+                       .ToArray();
         }
 
-        public Product[] GetAllByTitleOrManufacture(string query)
+
+        public async Task<Product[]> GetAllByTitleOrManufactureAsync(string query)
         {
+            if (string.IsNullOrWhiteSpace(query))  
+                return Array.Empty<Product>();
+
             var context = dbContextFactory.Create(typeof(ProductRepository));
-            return context
-                .Products
-                .Select(Product.Mapper.Map)
+
+
+            var dtos = await context.Products
                 .Where(product => product.Manufacturer.Contains(query) ||
-                                          product.Title.Contains(query))
+                    product.Title.Contains(query))
+                .ToArrayAsync();
+
+            return dtos.Select(Product.Mapper.Map)
                 .ToArray();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
             var context = dbContextFactory.Create(typeof(ProductRepository));
-            return context
-                .Products
-                .Select(Product.Mapper.Map)
-                .Single(product => product.Id == id);
+
+            var dtos = await context.Products
+                .SingleAsync(product => product.Id == id);
+
+            return Product.Mapper.Map(dtos);
         }
     }
 }

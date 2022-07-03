@@ -10,11 +10,11 @@ namespace Store.Web.App
             this.productRepository = productRepository;
         }
 
-        public IReadOnlyCollection<ProductModel> GetAllByQuery(string query)
+        public async Task<IReadOnlyCollection<ProductModel>> GetAllByQueryAsync(string query)
         {
             var products = Product.IsСategories(query)
-                ? productRepository.GetAllByСategories(query)
-                : productRepository.GetAllByTitleOrManufacture(query);
+                ? await productRepository.GetAllByСategoriesAsync(query)
+                : await productRepository.GetAllByTitleOrManufactureAsync(query);
 
             return products.Select(Map)
                            .ToArray();
@@ -33,9 +33,9 @@ namespace Store.Web.App
             };
         }
 
-        public ProductModel GetById(int id)
+        public async Task<ProductModel> GetByIdAsync(int id)
         {
-            var product = productRepository.GetById(id);
+            var product = await productRepository.GetByIdAsync(id);
             return Map(product);
         }
     }

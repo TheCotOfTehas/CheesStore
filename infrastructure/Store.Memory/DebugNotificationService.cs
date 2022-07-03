@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,20 +11,28 @@ namespace Store.Memory
     {
         public void SendConfirmationCode(string cellPhone, int code)
         {
-            if (cellPhone =="1")
-            {
-                
-            }
+            Debug.WriteLine("Cell phone: {0}, code: {1:0000}.", cellPhone, code);
         }
 
-        public void Post()
+        public Task SendConfirmationCodeAsync(string cellPhone, int code)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Cell phone: {0}, code: {1:0000}.", cellPhone, code);
+
+            return Task.CompletedTask;
         }
 
-        public void CellPhone()
+        public void StartProcess(Order order)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Order ID {0}", order.Id);
+            Debug.WriteLine("Delivery: {0}", (object)order.Delivery.Description);
+            Debug.WriteLine("Payment: {0}", (object)order.Payment.Description);
+        }
+
+        public Task StartProcessAsync(Order order)
+        {
+            StartProcess(order);
+
+            return Task.CompletedTask;
         }
     }
 }

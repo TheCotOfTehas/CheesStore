@@ -8,8 +8,12 @@ namespace Store
 {
     public interface INotificationService
     {
+        Task SendConfirmationCodeAsync(string cellPhone, int code);
+
         void SendConfirmationCode(string cellPhone, int code);
-        public void Post();
-        public void CellPhone();
+
+        void StartProcess(Order order);
+
+        Task StartProcessAsync(Order order);
     }
 }
