@@ -6,16 +6,21 @@
 
 <h1>Результаты поиска</h1>
 
-@if(Model.Count == 0)
-{
-    <p>Ничего не найдено</p>
-}
-else
-{
-    <ul>
-        @foreach(var product in Model)
+<div class="row mt-5 mb-2">
+    @if(Model.Count == 0)
+    {
+        <p>Ничего не найдено</p>
+    }
+    else
+    {
+        foreach(var product in Model)
         {
-            <li><a href = "@Url.Action("Index", "Product", new {id = product.Id})">@product.Title</a> </li>
+            <div class="col-lg-4">
+            <img class="img-responsive img-rounded" src="@product.img" alt="@product.Title">
+            <h2>Имя: @product.Title</h2>
+             <p>Цена: @product.Price.ToString("c")</p>
+             <p><a class="btn btn-warning" href="@Url.Action("Index", "Product", new {id = product.Id})">Подробнее</a></p>
+            </div>
         }
-    </ul>
-}
+    }
+</div>

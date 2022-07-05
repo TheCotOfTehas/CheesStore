@@ -8,5 +8,6 @@
         public string Сategories { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+        public string img { get; set; }
     }
 }
