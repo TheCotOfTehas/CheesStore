@@ -40,6 +40,12 @@ public class Product
         get => dto.Price;
         set => dto.Price = value;
     }
+
+    public string Img
+    {
+        get => dto.img;
+        set => dto.img = value;
+    }
     public decimal Count { get; }
     public Product(ProductDto dto) 
     { 
@@ -63,7 +69,8 @@ public class Product
                                      string manufacturer,
                                      string title,
                                      string description,
-                                     decimal price)
+                                     decimal price,
+                                     string img)
         {
 
             if (string.IsNullOrWhiteSpace(title))
@@ -77,6 +84,7 @@ public class Product
                 Title = title.Trim(),
                 Description = description?.Trim(),
                 Price = price,
+                img = img, 
             };
         }
     }

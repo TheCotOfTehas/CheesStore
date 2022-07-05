@@ -72,6 +72,9 @@ namespace Store.Data.EF
                           value => JsonConvert.SerializeObject(value),
                           value => JsonConvert.DeserializeObject<Dictionary<string, string>>(value))
                       .Metadata.SetValueComparer(DictionaryComparer);
+
+                action.Property(dto => dto.img)
+                     .HasMaxLength(40);
             });
         }
 
@@ -109,6 +112,7 @@ namespace Store.Data.EF
                             "Такой сыр выдерживается от недели до нескольких месяцев, иногда дольше. " +
                             "Часто в качотту добавляют орехи и травы.",
                         Price = 150m,
+                        img = "/img/Качотта_photo.jpg",
                     },
                     new ProductDto
                     {
@@ -123,6 +127,7 @@ namespace Store.Data.EF
                             "«Настоящий адыгейский сыр пахнет свежим молоком и полевыми цветами," +
                             "относится к диетическим продуктам питания и обладает высокой пищевой ценностью»[2],",
                         Price = 100m,
+                        img = "/img/Адыгейский_photo.jpg",
                     },
                     new ProductDto
                     {
@@ -134,6 +139,7 @@ namespace Store.Data.EF
                             "Лира для сыра позволяет это сделать буквально за пару движений, " +
                             "а главное идеально ровными кусочками (в отличие от обычной нарезки ножом).. ",
                         Price = 1200m,
+                        img = "Чечил_photo.jpg",
                     },
                     new ProductDto
                     {
@@ -146,6 +152,7 @@ namespace Store.Data.EF
                             "к юго-западу от Милана в конце XVI — начале XVII века. " +
                             "Часто используется в приготовлении чизкейков и других десертов.",
                         Price = 60m,
+                        img = "/img/Качотта_photo.jpg",
                     },
                     new ProductDto
                     {
@@ -155,6 +162,7 @@ namespace Store.Data.EF
                         Title = "Качокава́лло",
                         Description = "Качокава́лло - сырные мешочки. Вытяжной полутвердый сыр из коровьего молока с вызреванием более 1.5 -2 месяца.",
                         Price = 190m,
+                        img = "/img/Качокавалла_photo.jpg",
                     },
                     new ProductDto
                     {
@@ -164,6 +172,7 @@ namespace Store.Data.EF
                         Title = "Рикотта",
                         Description = "Мягкий творожный сыр двойной варки",
                         Price = 80m,
+                        img = "/img/Качотта_photo.jpg",
                     }
                 );
             });

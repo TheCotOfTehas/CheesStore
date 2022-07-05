@@ -20,6 +20,7 @@ namespace Store.Data
 
         public Dictionary<string, string>? DeliveryParameters { get; set; }
 
+        public string? img { get; set; }
         public string? PaymentServiceName { get; set; }
 
         public string? PaymentDescription { get; set; }

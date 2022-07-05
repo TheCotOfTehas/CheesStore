@@ -14,21 +14,7 @@ namespace Store.Data.EF
                 },
                 ServiceLifetime.Transient
             );
-            /*
-             builder.Services.AddTransient<ICounter, RandomCounter>();
-             builder.Services.AddTransient<CounterService>();
-            */
 
-            /*
-             builder.Services.AddScoped<ICounter, RandomCounter>();
-             builder.Services.AddScoped<CounterService>();
-             */
-
-            /*
-             builder.Services.AddSingleton<ICounter, RandomCounter>();
-             builder.Services.AddSingleton<CounterService>();
-             */
-            //На каждый запрос пользователя создаём свой словарь
             services.AddScoped<Dictionary<Type, StoreDbContext>>(); 
 
             services.AddScoped<DbContextFactory>(); 
