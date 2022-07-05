@@ -72,6 +72,9 @@ namespace Store.Data.EF
                           value => JsonConvert.SerializeObject(value),
                           value => JsonConvert.DeserializeObject<Dictionary<string, string>>(value))
                       .Metadata.SetValueComparer(DictionaryComparer);
+
+                action.Property(dto => dto.img)
+                     .HasMaxLength(40);
             });
         }
 

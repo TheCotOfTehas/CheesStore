@@ -29,7 +29,8 @@ namespace Store.Web.App
                 Description = product.Description,
                 Manufacturer = product.Manufacturer,
                 Price = product.Price,
-                Сategories = product.Сategories
+                Сategories = product.Сategories,
+                img = product.Img,
             };
         }
 
