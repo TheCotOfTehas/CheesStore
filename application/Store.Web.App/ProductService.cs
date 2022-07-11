@@ -1,4 +1,5 @@
-﻿
+﻿using static System.Net.Mime.MediaTypeNames;
+
 namespace Store.Web.App
 {
     public class ProductService
@@ -12,9 +13,19 @@ namespace Store.Web.App
 
         public async Task<IReadOnlyCollection<ProductModel>> GetAllByQueryAsync(string query)
         {
-            var products = Product.IsСategories(query)
-                ? await productRepository.GetAllByСategoriesAsync(query)
-                : await productRepository.GetAllByTitleOrManufactureAsync(query);
+            Product[] products;
+            if (Product.IsСategories(query))
+            {
+                products = await productRepository.GetAllByСategoriesAsync(query);
+                if (products.Length == 0 || products == null)
+                    products = await productRepository.GetAllByTitleOrManufactureAsync(query);
+            }
+            else
+            {
+                products = await productRepository.GetAllByTitleOrManufactureAsync(query);
+            }
+
+
 
             return products.Select(Map)
                            .ToArray();

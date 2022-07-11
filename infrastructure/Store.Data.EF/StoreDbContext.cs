@@ -112,7 +112,7 @@ namespace Store.Data.EF
                             "Такой сыр выдерживается от недели до нескольких месяцев, иногда дольше. " +
                             "Часто в качотту добавляют орехи и травы.",
                         Price = 150m,
-                        img = "/img/Качотта_photo.jpg",
+                        img = "/img/Качотта_photo.jpg" ,
                     },
                     new ProductDto
                     {
@@ -139,7 +139,7 @@ namespace Store.Data.EF
                             "Лира для сыра позволяет это сделать буквально за пару движений, " +
                             "а главное идеально ровными кусочками (в отличие от обычной нарезки ножом).. ",
                         Price = 1200m,
-                        img = "Чечил_photo.jpg",
+                        img = "https://bifi.kz/d/lira.jpg",
                     },
                     new ProductDto
                     {
@@ -152,7 +152,7 @@ namespace Store.Data.EF
                             "к юго-западу от Милана в конце XVI — начале XVII века. " +
                             "Часто используется в приготовлении чизкейков и других десертов.",
                         Price = 60m,
-                        img = "/img/Качотта_photo.jpg",
+                        img = "https://n1s2.hsmedia.ru/cc/7e/26/cc7e267644f902633d4a348cd096090b/620x432_1_59ada42f231c8b1e6f47e87a7a991eaf@800x558_0x59f91261_2951699031394186123.jpeg",
                     },
                     new ProductDto
                     {
@@ -172,7 +172,7 @@ namespace Store.Data.EF
                         Title = "Рикотта",
                         Description = "Мягкий творожный сыр двойной варки",
                         Price = 80m,
-                        img = "/img/Качотта_photo.jpg",
+                        img = "https://tvoyproduct.ru/files/products/1671150/63a1d3978b620a2ef75a3dcdfae00cd1.png",
                     }
                 );
             });

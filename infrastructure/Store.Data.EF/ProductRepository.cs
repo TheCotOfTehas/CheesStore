@@ -22,6 +22,7 @@ namespace Store.Data.EF
                 .Where(chees => chees.Сategories == query)
                 .ToArrayAsync();
 
+
             return dtos.Select(Product.Mapper.Map)
                            .ToArray();
         }

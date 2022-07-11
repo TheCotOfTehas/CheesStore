@@ -16,3 +16,20 @@ html {
 body {
   background: #0094ff;
 }
+
+.ImageThumbnail{
+    height: 150px;
+    max-width: 250px;
+}
+
+.photoHeaderStyle {
+    background: rgb(128, 128, 128);
+    border-radius: 5px 20px 20px 20px !important;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.card{
+    border-radius: 45px 0 45px 0;
+}
+
