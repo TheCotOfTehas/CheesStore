@@ -15,11 +15,14 @@
     {
         foreach(var product in Model)
         {
-            <div class="col-lg-4">
-            <img class="img-responsive img-rounded" src="@product.img" alt="@product.Title">
-            <h2>Имя: @product.Title</h2>
-             <p>Цена: @product.Price.ToString("c")</p>
-             <p><a class="btn btn-warning" href="@Url.Action("Index", "Product", new {id = product.Id})">Подробнее</a></p>
+            <div class="col-12 col-lg-4 col-sm-6">
+                <div class="card-img-top">
+                    <img src="@product.img" class="w-75 photoHeaderStyle ImageThumbnail" alt="@product.Title"/>
+                </div>
+
+                <h2>Имя: @product.Title</h2>
+                 <p>Цена: @product.Price.ToString("c")</p>
+                 <p><a class="btn btn-warning" href="@Url.Action("Index", "Product", new {id = product.Id})">Подробнее</a></p>
             </div>
         }
     }

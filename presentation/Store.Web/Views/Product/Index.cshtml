@@ -10,6 +10,6 @@
 <p>Цена <strong>@Model.Price</strong></p>
 <form action="@Url.Action("AddItem", "Order")" method="post">
     <input type="hidden" name="productId" value="@Model.Id" />
-    <img class="img-responsive img-rounded" src="@Model.img" alt="@Model.Title">
+    <img class="img-responsive img-rounded photoHeaderStyle" src="@Model.img" alt="@Model.Title">
     <button class="btn btn-success" type="submit">В корзину</button>
 </form>
