@@ -21,29 +21,16 @@
                 </div>
 
                 <h2>Имя: @product.Title</h2>
-                 <p>Цена: @product.Price.ToString("c")</p>
-                 <p><a class="btn btn-warning" href="@Url.Action("Index", "Product", new {id = product.Id})">Подробнее</a></p>
+                <p>Цена: @product.Price.ToString("c")</p>
+
+                <button type="button" onclick = "$.modal().open()">Подробнее</button>
+                @*<p><a class="btn btn-warning" href="@Url.Action("Index", "Product", new {id = product.Id})">Подробнее</a></p>*@
             </div>
         }
     }
 
-    @*<div class="MyModal">
-        <div class="modal-overlay">
-            <div class="modal-window">
-                <div class="modal-header">
-                    <span class="modal-title">Modal title</span>
-                    <span class="modal-close">x</span>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        @Model.First().Manufacturer
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button>Ok</button>
-                    <button>Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
+    <script src="~/js/search/base.js"></script>
+     <script src="~/js/search/plugins/modal.js"></script>
+    <script src="~/js/search/index.js"></script>
+    <script src="~/js/Class.js"></script> 
 </div>

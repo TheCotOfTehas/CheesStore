@@ -29,5 +29,25 @@ namespace Store.Tests
         {
             throw new NotImplementedException();
         }
+
+        public Task<Product[]> GetAllByСategoriesAsync(string categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Product[]> GetAllByTitleOrManufactureAsync(string titlePart)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Product> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Product[]> GetAllCategoryAsync(IEnumerable<int> productIds)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,85 +1,18 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  background: #0094ff;
+    background: #0094ff;
 }
-
-.ImageThumbnail{
-    height: 150px;
-    max-width: 250px;
-}
-
-.photoHeaderStyle {
-    background: rgb(128, 128, 128);
-    border-radius: 5px 20px 20px 20px !important;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.card{
-    border-radius: 45px 0 45px 0;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, .5);
-}
-
-.modal-window {
-    width: 600px;
-    border-radius: 5px;
-    background: #fff;
-    margin: 100px auto;
-}
-
-.modal-header {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #eee;
-}
-
-.modal-title {
-    font-size: 1.5rem;
-}
-
-.modal-close {
-    cursor: pointer;
-}
-
-.modal-body {
-    padding: 10px;
-}
-
-.modal-body p{
-    margin: 0 0 5px;
-}
-
-.modal-footer{
-    padding: 5px 10px;
-    border-top: 1px solid #eee
-}
-
-.footer {
-    max-width: 100px;
-    height: 100px;
-    margin: 0 auto;
-}
-

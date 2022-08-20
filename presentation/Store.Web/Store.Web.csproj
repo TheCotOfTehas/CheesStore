@@ -28,4 +28,8 @@
     <Folder Include="wwwroot\img\thumbs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\search\base.js" />
+  </ItemGroup>
+
 </Project>
